@@ -35,3 +35,38 @@ let itemPrice = document.querySelector("#price");
     });
 };
 
+// Déclaration d'une fonction fléchée asynchrone stockée dans la constante displayCurrentProduct pour l'affichage du produit
+const displayCurrentProduct = async() => {
+    await fetchProduct();
+
+    // Ajout des différents éléments dans le DOM
+    let itemImg = document.createElement("img");
+    itemImg.setAttribute("src", product.imageUrl);
+    itemImg.setAttribute("alt", product.altTxt);
+    document.querySelector(".item__img").appendChild(itemImg);
+
+    let itemTitle = document.querySelector("#title");
+    itemTitle.textContent = product.name;
+   
+    itemPrice.textContent = product.price;
+   
+    let itemText = document.querySelector("#description");
+    itemText.textContent = product.description;
+    
+    colorsOptions(); // Appel de la constante pour le choix des couleurs
+};
+
+// Appel de la constante pour l'affichage du produit sur la page
+displayCurrentProduct(); 
+
+// Déclaration d'une fonction fléchée stockée dans la constante colorsOptions pour le choix des couleurs
+const colorsOptions = () => {
+     
+    // Utilisation de la boucle for...of pour parcourir le tableau des couleurs
+     for (let color of product.colors) {
+        let colorChoice = document.createElement("option");
+        colorChoice.setAttribute("value", color);
+        colorChoice.textContent = color;
+        colors.appendChild(colorChoice);
+    }
+};
