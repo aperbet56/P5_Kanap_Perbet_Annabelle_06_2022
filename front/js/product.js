@@ -70,3 +70,45 @@ const colorsOptions = () => {
         colors.appendChild(colorChoice);
     }
 };
+
+// Déclaration d'une fonction fléchée stockée dans la constante addToCart s'occupant de gérer le panier
+const addToCart = () => {
+
+    // Récupération du bouton "Ajouter au panier"
+    let btnCart = document.querySelector("#addToCart");
+   
+    //Ecoute de l'événement click sur le bouton "Ajouter au panier"
+    btnCart.addEventListener("click", () => {
+
+        // Création de variables récupérant les valeurs de couleur et de quantité choisies
+        let colorSelected = colors.value;
+        console.log("Couleur du canapé : " + colorSelected);
+
+        let quantitySelected = quantity.value;
+        console.log("Quantité souhaitée : " + quantitySelected);
+
+        // variable stockant le prix à payer selon la quantité voulue
+        let priceAccordingToQuantity = (product.price * quantitySelected);
+        console.log("Prix à payer selon la quantité choisie : " + priceAccordingToQuantity +" €");
+
+        // Condition vérifiant si la couleur et la quantité choisies sont conformes 
+         if (colorSelected !== undefined && colorSelected !== "" && quantitySelected > 0 && quantitySelected <= 100) {
+    
+            // Création d'un objet productSelected correspondant à la selection du client qui sera ajouté au panier
+            let productSelected = {
+                id: idProduct,
+                name: product.name,
+                color: colorSelected,
+                quantity: Number(quantitySelected)
+            };
+            console.log(productSelected);
+            alert("Votre produit a bien été ajouté au panier");
+        } else {
+            // Apparition d'un message d'erreur
+            alert ("Veuillez choisir une couleur et/ou une quantité comprise entre 1 et 100");
+        }
+    });
+};
+
+addToCart();
+
