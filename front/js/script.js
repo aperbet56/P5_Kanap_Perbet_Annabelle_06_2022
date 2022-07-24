@@ -15,7 +15,7 @@ const fetchProducts = async () => {
     })
     .then(function(value) { 
         products = value;
-        console.log(products);
+        console.table(products);
     })
     .catch(function(err) {
         console.log("Désolé, une erreur est survenue sur le serveur."); // Affiche le message d'erreur dans la console
@@ -38,7 +38,7 @@ const productsDisplay = async () => {
        let itemArticle = document.createElement("article");
        itemLink.appendChild(itemArticle);
 
-        // Création  et insertion de l'élément <img> dans le DOM
+        // Création et insertion de l'élément <img> dans le DOM
        let itemImg = document.createElement("img"); 
        itemImg.setAttribute("src", products[i].imageUrl);
        itemImg.setAttribute("alt", products[i].altTxt);
