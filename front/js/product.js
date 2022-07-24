@@ -87,10 +87,6 @@ const addToCart = () => {
         let quantitySelected = quantity.value;
         console.log("Quantité souhaitée : " + quantitySelected);
 
-        // variable stockant le prix à payer selon la quantité voulue
-        let priceAccordingToQuantity = (product.price * quantitySelected);
-        console.log("Prix à payer selon la quantité choisie : " + priceAccordingToQuantity +" €");
-
         // Condition vérifiant si la couleur et la quantité choisies sont conformes 
         if ((colorSelected !== undefined || colorSelected !== "") && (quantitySelected > 0 && quantitySelected <= 100)) {
     
