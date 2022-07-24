@@ -96,8 +96,47 @@ const displayProductInLS = async(basket) => {
             itemDivSettingsDelete.appendChild(deleteItem);
         }
     }
+    // Appel des différentes fonctions fléchées stockée dans des constantes
+    getNumberProduct(basket);
+    getTotalPrice(basket);
 };
 
 // Appel de la constante displayProductInLS contenant une fonction fléchée asynchrone
 displayProductInLS(basket);
+
+// Fonction calcul de la quantité totale de produits dans le panier 
+const getNumberProduct = (basket) => {
+   
+    // Je fixe une quantité de départ à zéro
+    let numberProduct = 0;
+
+    // Boucle for qui parcourt le panier
+    for (let i = 0; i < basket.length; i++) {
+        numberProduct += basket[i].quantity;
+    }
+
+    // Insertion de la quantité totale dans le DOM
+    document.querySelector("#totalQuantity").textContent = numberProduct;
+    
+    // Je retourne le nombre de produit commandé
+    return numberProduct;
+};
+
+// Fonction calcul du prix total à payer 
+const getTotalPrice = (basket) => {
+    
+    // Je fixe un prix de départ à zéro
+    let orderTotalPrice = 0;
+
+    // Boucle for qui parcourt le panier
+    for (let i = 0; i < basket.length; i++) {
+        orderTotalPrice += product.price * basket[i].quantity;
+    }
+
+    // Insertion du prix total dans le DOM
+    document.querySelector("#totalPrice").textContent = orderTotalPrice;
+    
+    // Je retourne le prix total à payer
+    return orderTotalPrice;
+};
 
