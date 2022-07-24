@@ -92,7 +92,7 @@ const addToCart = () => {
         console.log("Prix à payer selon la quantité choisie : " + priceAccordingToQuantity +" €");
 
         // Condition vérifiant si la couleur et la quantité choisies sont conformes 
-        if (colorSelected !== undefined && colorSelected !== "" && quantitySelected > 0 && quantitySelected <= 100) {
+        if ((colorSelected !== undefined || colorSelected !== "") && (quantitySelected > 0 && quantitySelected <= 100)) {
     
             // Création d'un objet productSelected correspondant à la selection du client qui sera ajouté au panier
             let productSelected = {
@@ -104,24 +104,15 @@ const addToCart = () => {
             console.log(productSelected);
             alert("Votre produit a bien été ajouté au panier"); 
 
-            /*const popupConfirmation = () => {
-                if (window.confirm(`Votre commande de ${quantitySelected} canapé(s) ${product.name} de couleur ${colorSelected} a bien été ajouté au panier. Pour consulter le panier, cliquez sur OK. Pour revenir à la page d'accueil, veuillez cliquer sur ANNULER`)) {
-                    window.location.href = "cart.html";
-                } else {
-                    window.location.href = "index.html";
-                }
-            };*/
-            
             // Initialisation du localStorage
             let basket = JSON.parse(localStorage.getItem("productSelected"));
 
             // Si le localStorage est vide, on y ajoute le produit sélectionné 
-            if (basket === null) {
+            if (basket === null || basket === 0) {
                 basket = [];
                 basket.push(productSelected);
                 localStorage.setItem("productSelected", JSON.stringify(basket));
                 console.table(basket);
-                //popupConfirmation();
 
             // Si le localStorage contient déjà un produit ou plus
             } else if (basket !== null) {
@@ -131,19 +122,16 @@ const addToCart = () => {
                 
                 // Si le produit commandé est identique (même id et même couleur), on incrémente la quantité
                 if (foundProduct) {
-                    //foundProduct.quantity += productSelected.quantity;
-                    let newQuantity = Number(productSelected.quantity) + Number(foundProduct.quantity);
-                    foundProduct.quantity = newQuantity;
+                    let totalNewQuantity = Number(productSelected.quantity) + Number(foundProduct.quantity);
+                    foundProduct.quantity = totalNewQuantity;
                     localStorage.setItem("productSelected", JSON.stringify(basket));
                     console.table(basket);
-                    //popupConfirmation();
 
                 // Si le produit commandé n'est pas identique, on l'ajoute au localStorage
                 } else {
                     basket.push(productSelected);
                     localStorage.setItem("productSelected", JSON.stringify(basket));
                     console.table(basket);
-                    //popupConfirmation();
                 }
             }
         } else {
