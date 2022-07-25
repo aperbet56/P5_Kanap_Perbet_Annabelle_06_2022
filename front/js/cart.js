@@ -214,7 +214,21 @@ const removeProduct = (basket) => {
                 localStorage.setItem("productSelected",JSON.stringify(basket));
                 window.location.reload();
                 console.table(basket);
+                alert("Le produit a bien été supprimé de votre panier");
             };
         });
     });
 };
+
+/********* Gestion validation du formulaire *********/ 
+
+// Regex
+
+const regexName = /^[A-Z][A-Za-z\é\è\ê\-]+$/;
+const regexAddress = /^(.){2,50}$/;
+const regexCity = /^[a-zA-Z',.\s-]{1,25}$/;
+const regexEmail = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/;
+
+
+
+  
