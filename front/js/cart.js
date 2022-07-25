@@ -99,6 +99,7 @@ const displayProductInLS = async(basket) => {
     // Appel des différentes fonctions fléchées stockée dans des constantes
     getNumberProduct(basket);
     getTotalPrice(basket);
+    quantityChange(basket);
 };
 
 // Appel de la constante displayProductInLS contenant une fonction fléchée asynchrone
@@ -138,5 +139,48 @@ const getTotalPrice = (basket) => {
     
     // Je retourne le prix total à payer
     return orderTotalPrice;
+};
+
+// Fonction modifier la quantité du panier ayant pour paramètre le panier
+const quantityChange = (basket) => {
+    
+    // Récupération de tous les inputs ayant la class itemQuantity dans la variable
+    let changeInputQuantity = document.querySelectorAll(".itemQuantity");
+
+    changeInputQuantity.forEach(input => {
+
+        // Ecoute de l'événement "change" sur les inputs
+        input.addEventListener("change", (e) => {
+            e.preventDefault();
+
+            // Recherche de l'article contenant le champ (indiquant la quantité) modifié et récupération des informations correspondantes
+            let modifyInput = e.target.closest("article");
+            let idValue = modifyInput.dataset.id;
+            let colorValue = modifyInput.dataset.color;
+            let quantityValue = e.target.value;
+
+            // Mise en place d'une condition pour la modification de la quantité
+            if (quantityValue > 0 && quantityValue <= 100) {
+
+                // Boucle for qui parcourt le panier
+                for (let i = 0; i < basket.length; i++) {
+                    if (basket[i].id === idValue && basket[i].color === colorValue) {
+                       
+                        // La quantité du produit devient le nouveau chiffre présent dans l'input
+                        basket[i].quantity = Number(quantityValue);
+                
+                        // Mise à jour de la quantité dans le localStorage et rechargement de la page
+                        localStorage.setItem("productSelected",JSON.stringify(basket));
+                        alert(`La quantité de canapé : ${basket[i].name} de couleur ${colorValue} a été modifiée dans votre panier !`)
+                        window.location.reload();
+                        console.table(basket);
+                   }
+                } 
+            } else {
+                // Appartion d'un message d'erreur
+                alert("Veuillez choisir une quantité comprise entre 1 et 100")
+            }
+        });
+    });
 };
 
