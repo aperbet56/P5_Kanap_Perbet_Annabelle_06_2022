@@ -100,6 +100,7 @@ const displayProductInLS = async(basket) => {
     getNumberProduct(basket);
     getTotalPrice(basket);
     quantityChange(basket);
+    removeProduct(basket);
 };
 
 // Appel de la constante displayProductInLS contenant une fonction fléchée asynchrone
@@ -184,3 +185,36 @@ const quantityChange = (basket) => {
     });
 };
 
+// Fonction suppression d'un produit du panier avec le panier en paramètre 
+const removeProduct = (basket) => {
+
+    // Récupération de tous les boutons "Supprimer" ayant la class deleteItem dans la variable deleteBtn
+    let deleteProductItem = document.querySelectorAll(".deleteItem");
+
+    deleteProductItem.forEach(btn => {
+
+        // Ecoute de l'événement "click" sur les boutons "supprimer"
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            deleteConfirmation = window.confirm("Êtes-vous sûr(e) de vouloir supprimer ce produit du panier ?");
+            
+            // Si la suppression du produit est confirmé par l'internaute
+            if (deleteConfirmation == true) {
+
+                // Recherche l'article comprenat le bouton "Supprimer" qui a été cliqué
+                let deleteArticle = e.target.closest("article");
+                let idValue = deleteArticle.dataset.id;
+                let colorValue = deleteArticle.dataset.color;
+
+                // Méthode filter : recherche du canapé ayant l'id et la couleur du produit à supprimer
+                basket = basket.filter((p) => !(p.id === idValue && p.color == colorValue));
+
+                // Mise à jour du LocalStorage et rechargement de la page
+                localStorage.setItem("productSelected",JSON.stringify(basket));
+                window.location.reload();
+                console.table(basket);
+            };
+        });
+    });
+};
