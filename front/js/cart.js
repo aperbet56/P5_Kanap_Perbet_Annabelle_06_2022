@@ -172,9 +172,9 @@ const quantityChange = (basket) => {
                 
                         // Mise à jour de la quantité dans le localStorage et rechargement de la page
                         localStorage.setItem("productSelected",JSON.stringify(basket));
-                        alert(`La quantité de canapé : ${basket[i].name} de couleur ${colorValue} a été modifiée dans votre panier !`)
-                        window.location.reload();
                         console.table(basket);
+                        alert(`La quantité de canapé : ${basket[i].name} de couleur ${colorValue} a été modifiée dans votre panier !`);
+                        window.location.reload();
                    }
                 } 
             } else {
@@ -207,28 +207,125 @@ const removeProduct = (basket) => {
                 let idValue = deleteArticle.dataset.id;
                 let colorValue = deleteArticle.dataset.color;
 
-                // Méthode filter : recherche du canapé ayant l'id et la couleur du produit à supprimer
-                basket = basket.filter((p) => !(p.id === idValue && p.color == colorValue));
+                // Méthode filter pour supprimer un produit
+                basket = basket.filter((p) => !(p.id === idValue && p.color === colorValue));
 
                 // Mise à jour du LocalStorage et rechargement de la page
                 localStorage.setItem("productSelected",JSON.stringify(basket));
-                window.location.reload();
                 console.table(basket);
                 alert("Le produit a bien été supprimé de votre panier");
+                window.location.reload();
             };
         });
     });
 };
 
-/********* Gestion validation du formulaire *********/ 
+// Gestion validation du formulaire 
 
 // Regex
-
-const regexName = /^[A-Z][A-Za-z\é\è\ê\-]+$/;
+const regexName = /^[A-Z][A-Za-z\é\è\ê\ô\-]+$/;
 const regexAddress = /^(.){2,50}$/;
 const regexCity = /^[a-zA-Z',.\s-]{1,25}$/;
 const regexEmail = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/;
 
+// Récupération des différents imputs
+let firstName = document.querySelector("#firstName");
+let lastName = document.querySelector("#lastName");
+let address = document.querySelector("#address");
+let city = document.querySelector("#city");
+let email = document.querySelector("#email");
 
+// Fonction validation prénom
+const firstNameValidation = (firstName) => {
 
-  
+    // Ecoute de l'événement "change" sur l'input firstName
+    firstName.addEventListener("change", (e) => {
+        e.preventDefault();
+
+        if (regexName.test(firstName.value) == false) {
+            document.querySelector("#firstNameErrorMsg").textContent= "Veuillez saisir un prénom valide, ex : Pierre";
+            return false;
+        } else {
+            document.querySelector("#firstNameErrorMsg").textContent = "Prénom valide";
+            return true;
+        }
+    });
+};
+// Appel de la fontion firstNameValidation
+firstNameValidation(firstName);
+
+// Fonction validation nom 
+const lastNameValidation = (lastName) => {
+
+    // Ecoute de l'événement "change" sur l'input lastName
+    lastName.addEventListener("change", (e) => {
+        e.preventDefault();
+
+        if (regexName.test(lastName.value) == false) {
+            document.querySelector("#lastNameErrorMsg").textContent = "Veuillez saisir un nom valide, ex : Dupont";
+            return false;
+        } else {
+            document.querySelector("#lastNameErrorMsg").textContent = "Nom valide";
+            return true;
+        }
+    });
+};
+// Appel de la fontion lastNameValidation
+lastNameValidation(lastName);
+
+// Fonction validation addresse
+const addressValidation = (address) => {
+
+    // Ecoute de l'événement "change" sur l'input address
+    address.addEventListener("change", (e) => {
+        e.preventDefault();
+
+        if (regexAddress.test(address.value) == false) {
+            document.querySelector("#addressErrorMsg").textContent= "Veuillez saisir une addresse valide, ex : 10 Avenue des Oliviers";
+            return false;
+        } else {
+            document.querySelector("#addressErrorMsg").textContent = "Addresse valide";
+            return true;
+        }
+    });
+};
+ // Appel de la fontion addressValidation
+addressValidation(address);
+
+// Fonction validation ville
+const cityValidation = (city) => {
+
+    // Ecoute de l'événement "change" sur l'input city
+    city.addEventListener("change", (e) => {
+        e.preventDefault();
+
+        if (regexCity.test(city.value) == false) {
+            document.querySelector("#cityErrorMsg").textContent= "Veuillez saisir une ville valide, ex : Lyon";
+            return false;
+        } else {
+            document.querySelector("#cityErrorMsg").textContent = "Ville valide";
+            return true;
+        }
+    });
+};
+// Appel de la fontion cityValidation
+cityValidation(city);
+
+// Fonction validation email
+const emailValidation = (email) => {
+
+    // Ecoute de l'événement "change" sur l'input email
+    email.addEventListener("change", (e) => {
+        e.preventDefault();
+
+        if (regexEmail.test(email.value) == false) {
+            document.querySelector("#emailErrorMsg").textContent= "Veuillez saisir un email valide, ex : exemple@exemple.com";
+            return false;
+        } else {
+            document.querySelector("#emailErrorMsg").textContent = "email valide";
+            return true;
+        }
+    });
+};
+// Appel de la fontion emailValidation
+emailValidation(email);
