@@ -2,7 +2,11 @@
 let basket = JSON.parse(localStorage.getItem("productSelected"));
 console.log(basket);
 
+// variable qui va stocker les données non présentes dans le localStorage
 let product = {};
+
+// variable créant un tableau vide qui va être utilisée pour le calcul du prix total
+let articles = [];
 
 // Déclaration d'une fontion fléchée ayant pour paramètre le panier stockée dans la constante getProductsInLS pour l'affichage des produits du localStorage
 const displayProductInLS = async(basket) => {
@@ -23,6 +27,7 @@ const displayProductInLS = async(basket) => {
             .then (function(value) { 
                 product = value; 
                 console.log(product);
+                articles.push(product);
             })
             .catch(function(err) {
                 console.log("Désolé, une erreur est survenue sur le serveur."); // Affiche le message d'erreur dans la console
@@ -61,7 +66,7 @@ const displayProductInLS = async(basket) => {
             itemDivDescription.appendChild(itemColor);
 
             let itemPrice = document.createElement("p");
-            let priceAccordingToQuantity = (product.price * basket[i].quantity) 
+            let priceAccordingToQuantity = (product.price * basket[i].quantity); 
             itemPrice.textContent = priceAccordingToQuantity + "€";
             itemDivDescription.appendChild(itemPrice);
 
@@ -108,7 +113,7 @@ displayProductInLS(basket);
 
 // Fonction calcul de la quantité totale de produits dans le panier 
 const getNumberProduct = (basket) => {
-   
+    
     // Je fixe une quantité de départ à zéro
     let numberProduct = 0;
 
@@ -119,7 +124,7 @@ const getNumberProduct = (basket) => {
 
     // Insertion de la quantité totale dans le DOM
     document.querySelector("#totalQuantity").textContent = numberProduct;
-    
+
     // Je retourne le nombre de produit commandé
     return numberProduct;
 };
@@ -132,7 +137,8 @@ const getTotalPrice = (basket) => {
 
     // Boucle for qui parcourt le panier
     for (let i = 0; i < basket.length; i++) {
-        orderTotalPrice += product.price * basket[i].quantity;
+        let productPrice = articles.filter(a => a._id == basket[i].id )[0].price;
+        orderTotalPrice += (productPrice * basket[i].quantity); 
     }
 
     // Insertion du prix total dans le DOM
@@ -175,7 +181,7 @@ const quantityChange = (basket) => {
                         console.table(basket);
                         alert(`La quantité de canapé : ${basket[i].name} de couleur ${colorValue} a été modifiée dans votre panier !`);
                         window.location.reload();
-                   }
+                    }
                 } 
             } else {
                 // Appartion d'un message d'erreur
@@ -202,13 +208,13 @@ const removeProduct = (basket) => {
             // Si la suppression du produit est confirmé par l'internaute
             if (deleteConfirmation == true) {
 
-                // Recherche l'article comprenat le bouton "Supprimer" qui a été cliqué
+                // Recherche l'article comprenant le bouton "Supprimer" qui a été cliqué
                 let deleteArticle = e.target.closest("article");
                 let idValue = deleteArticle.dataset.id;
                 let colorValue = deleteArticle.dataset.color;
 
-                // Méthode filter pour supprimer un produit
-                basket = basket.filter((p) => !(p.id === idValue && p.color === colorValue));
+                // Sélection des produits à conserver avec la méthode filter et suppression du produit cliqué avec la logique inversée !==
+                basket = basket.filter(p => p.id !== idValue || p.color !== colorValue);
 
                 // Mise à jour du LocalStorage et rechargement de la page
                 localStorage.setItem("productSelected",JSON.stringify(basket));
