@@ -16,7 +16,7 @@ const displayProductInLS = async(basket) => {
         emptyCartItems.innerHTML = `<p>Votre panier est vide</p>`;
     } else {
 
-        // boucle for qui va parcourir le panier et l'incrémenter lorsque le client souhaite ajouter un produit
+        // boucle for qui va parcourir le panier
         for (let i = 0; i < basket.length; i++) {
             await fetch(`http://localhost:3000/api/products/${basket[i].id}`) // Récupération des données manquantes des produits présents dans le localStorage
             .then(function(res) {
@@ -72,7 +72,7 @@ const displayProductInLS = async(basket) => {
 
             let itemDivSettings = document.createElement("div");
             itemDivSettings.classList.add("cart__items__content__settings");
-            itemArticle.appendChild(itemDivSettings);
+            itemDivContent.appendChild(itemDivSettings);
 
             let itemDivSettingsQuantity = document.createElement("div");
             itemDivSettingsQuantity.classList.add("cart__item__content__settings__quantity");
@@ -101,7 +101,7 @@ const displayProductInLS = async(basket) => {
             itemDivSettingsDelete.appendChild(deleteItem);
         }
     }
-    // Appel des différentes fonctions fléchées stockée dans des constantes
+    // Appel des différentes fonctions fléchées stockées dans des constantes
     getNumberProduct(basket);
     getTotalPrice(basket);
     quantityChange(basket);
@@ -137,7 +137,7 @@ const getTotalPrice = (basket) => {
 
     // Boucle for qui parcourt le panier
     for (let i = 0; i < basket.length; i++) {
-        let productPrice = articles.filter(a => a._id == basket[i].id )[0].price;
+        let productPrice = articles.filter(a => a._id === basket[i].id )[0].price;
         orderTotalPrice += (productPrice * basket[i].quantity); 
     }
 
@@ -203,7 +203,7 @@ const removeProduct = (basket) => {
         btn.addEventListener("click", (e) => {
             e.preventDefault();
 
-            deleteConfirmation = window.confirm("Êtes-vous sûr(e) de vouloir supprimer ce produit du panier ?");
+            const deleteConfirmation = window.confirm("Êtes-vous sûr(e) de vouloir supprimer ce produit du panier ?");
             
             // Si la suppression du produit est confirmé par l'internaute
             if (deleteConfirmation == true) {
@@ -221,7 +221,7 @@ const removeProduct = (basket) => {
                 console.table(basket);
                 alert("Le produit a bien été supprimé de votre panier");
                 window.location.reload();
-            };
+            }
         });
     });
 };
@@ -252,7 +252,7 @@ const firstNameValidation = (firstName) => {
             document.querySelector("#firstNameErrorMsg").textContent= "Veuillez saisir un prénom valide, ex : Pierre";
             return false;
         } else {
-            document.querySelector("#firstNameErrorMsg").textContent = "Prénom valide";
+            document.querySelector("#firstNameErrorMsg").textContent = "Le champ prénom est valide";
             return true;
         }
     });
@@ -271,7 +271,7 @@ const lastNameValidation = (lastName) => {
             document.querySelector("#lastNameErrorMsg").textContent = "Veuillez saisir un nom valide, ex : Dupont";
             return false;
         } else {
-            document.querySelector("#lastNameErrorMsg").textContent = "Nom valide";
+            document.querySelector("#lastNameErrorMsg").textContent = "Le champ nom est valide";
             return true;
         }
     });
@@ -290,7 +290,7 @@ const addressValidation = (address) => {
             document.querySelector("#addressErrorMsg").textContent= "Veuillez saisir une addresse valide, ex : 10 Avenue des Oliviers";
             return false;
         } else {
-            document.querySelector("#addressErrorMsg").textContent = "Addresse valide";
+            document.querySelector("#addressErrorMsg").textContent = "Le champ addresse est valide";
             return true;
         }
     });
@@ -309,7 +309,7 @@ const cityValidation = (city) => {
             document.querySelector("#cityErrorMsg").textContent= "Veuillez saisir une ville valide, ex : Lyon";
             return false;
         } else {
-            document.querySelector("#cityErrorMsg").textContent = "Ville valide";
+            document.querySelector("#cityErrorMsg").textContent = "Le champ ville est valide";
             return true;
         }
     });
@@ -328,10 +328,80 @@ const emailValidation = (email) => {
             document.querySelector("#emailErrorMsg").textContent= "Veuillez saisir un email valide, ex : exemple@exemple.com";
             return false;
         } else {
-            document.querySelector("#emailErrorMsg").textContent = "email valide";
+            document.querySelector("#emailErrorMsg").textContent = "Le champ email est valide";
             return true;
         }
     });
 };
 // Appel de la fontion emailValidation
 emailValidation(email);
+
+// Fonction envoyer au server
+const sendToServer = (basket) => {
+    
+    // Récupération du bouton "Commander !"
+    let btnOrder = document.querySelector("#order");
+
+    // Ecoute de l'événement "click" sur le bouton "Commander !"
+    btnOrder.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        if (basket === null || basket === 0) {
+            // Apparition d'un message d'erreur
+            alert("Votre panier est vide ! Veuillez choisir un ou plusieurs produits avant de remmplir le formulaire pour valider votre commande");
+      
+        }// Contrôle de la validité du formulaire avant de l'envoyer dans le localStorage
+        else if (regexName.test(firstName.value) == false || regexName.test(lastName.value) == false || regexAddress.test(address.value) == false || regexCity.test(city.value) == false || regexEmail.test(email.value) == false) {
+            // Apparition d'un message d'erreur
+            alert("Malheureusement, nous ne sommes pas en mesure d'enregistrer votre commande : vos informations de contact ne sont pas corrects ! ");
+        } else {
+
+            // Création de l'objet contact
+            let contact = {
+                firstName : firstName.value,
+                lastName : lastName.value,
+                address : address.value,
+                city : city.value,
+                email : email.value
+            };
+            console.log(contact);
+
+            // Enregistrement du formulaire dans le localStorage
+            localStorage.setItem("contact", JSON.stringify(contact));
+
+            //Création du tableau products
+            let products = [];
+            for (let i = 0; i < basket.length; i++) {
+                products.push(basket[i].id);
+                console.table(products);
+            }
+
+            // Requête fetch de l'URL de l'API et utilisation de la methode POST
+            fetch(`http://localhost:3000/api/products/order`, {
+                method : "POST",
+                headers : {
+                    "Accept" : "application/json;charset=utf-8",
+                    "Content-Type" : "application/json;charset=utf-8",
+                },
+                body : JSON.stringify({contact, products}),
+            })
+            .then(function(res) {
+                if (res.ok) {
+                    return res.json();
+                }
+            })
+            .then(function(value) {
+                let orderId = value.orderId;
+                console.log(orderId);
+                alert("Votre commande a bien été validée et enregistrée !");
+                window.location.assign(`confirmation.html?orderId=${orderId}`);
+            })
+            .catch(function(err) {
+                console.log("Désolé, une erreur est survenue sur le serveur."); // Affiche le message d'erreur dans la console
+            });
+        }
+    });
+};
+
+// Appel de la fonction sendToServer
+sendToServer(basket);
