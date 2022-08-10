@@ -1,9 +1,9 @@
 // URLSearchParams
-var str = window.location.href; // Récupération de l’URL du page courante
+var str = window.location.href; 
 var url = new URL(str);
 var search_params = new URLSearchParams(url.search);
-if(search_params.has("id")) { // Utilisation de la méthode has() pour vérifier si le paramètre placé entre parenthèses existe dans l’URL
-    var idProduct = search_params.get("id") // La méthode get() retourne la valeur associée au paramètre de recherche donné.
+if(search_params.has("id")) { 
+    var idProduct = search_params.get("id");
     console.log(`Voici l'id du canapé sélectionné : ${idProduct}`);
 }
 
@@ -15,27 +15,28 @@ let quantity = document.querySelector("#quantity");
 let itemPrice = document.querySelector("#price");
 
 /**
- * Déclaration d'une fonction fléchée asynchrone stockée dans la constante fetchProducts
+ * Déclaration de la fonction asynchrone fetchProducts
  * Envoi d'une requête HTTP de type GET grâce à fetch
  * Stockage des données de l'API dans la variable product
  */
  const fetchProduct = async() => {
-    await fetch(`http://localhost:3000/api/products/${idProduct}`) // Récupération des données du produit selon son id
+    await fetch(`http://localhost:3000/api/products/${idProduct}`) 
     .then(function(res) {
         if(res.ok){
             return res.json(); 
         }
     })
-    .then (function(value) { 
+    .then(function(value) { 
         product = value;
         console.log(product);
     })
     .catch(function(err) {
-        console.log("Désolé, une erreur est survenue sur le serveur."); // Affiche le message d'erreur dans la console
+        // Affichage d'un message d'erreur dans la console
+        console.log("Désolé, une erreur est survenue sur le serveur."); 
     });
 };
 
-// Déclaration d'une fonction fléchée asynchrone stockée dans la constante displayCurrentProduct pour l'affichage du produit
+// Déclaration de la fonction asynchrone displayCurrentProduct pour l'affichage du produit
 const displayCurrentProduct = async() => {
     await fetchProduct();
 
@@ -53,17 +54,17 @@ const displayCurrentProduct = async() => {
     let itemText = document.querySelector("#description");
     itemText.textContent = product.description;
     
-    colorsOptions(); // Appel de la constante pour le choix des couleurs
+    // Appel de la fonction colorsOptions 
+    colorsOptions(); 
 };
-
-// Appel de la constante pour l'affichage du produit sur la page
+// Appel de la fonction pour l'affichage du produit sur la page
 displayCurrentProduct(); 
 
-// Déclaration d'une fonction fléchée stockée dans la constante colorsOptions pour le choix des couleurs
+// Déclaration de la fonction colorsOptions permettant le choix des couleurs
 const colorsOptions = () => {
      
     // Utilisation de la boucle for...of pour parcourir le tableau des couleurs
-     for (let color of product.colors) {
+    for(let color of product.colors) {
         let colorChoice = document.createElement("option");
         colorChoice.setAttribute("value", color);
         colorChoice.textContent = color;
@@ -71,7 +72,7 @@ const colorsOptions = () => {
     }
 };
 
-// Déclaration d'une fonction fléchée stockée dans la constante addToCart s'occupant de gérer le panier
+// Déclaration de la fonction addToCart s'occupant de gérer le panier
 const addToCart = () => {
 
     // Récupération du bouton "Ajouter au panier"
@@ -82,15 +83,12 @@ const addToCart = () => {
 
         // Création de variables récupérant les valeurs de couleur et de quantité choisies
         let colorSelected = colors.value;
-        console.log("Couleur du canapé : " + colorSelected);
-
         let quantitySelected = quantity.value;
-        console.log("Quantité souhaitée : " + quantitySelected);
 
         // Condition vérifiant si la couleur et la quantité choisies sont conformes 
         if ((colorSelected !== undefined || colorSelected !== "") && (quantitySelected > 0 && quantitySelected <= 100)) {
     
-            // Création d'un objet productSelected correspondant à la selection du client qui sera ajouté au panier
+            // Création d'un objet productSelected contenant les données du produit sélectionné par le client
             let productSelected = {
                 id: product._id,
                 name: product.name,
@@ -113,7 +111,7 @@ const addToCart = () => {
             // Si le localStorage contient déjà un produit ou plus
             } else if (basket !== null) {
                 
-                // Vérification si un produit identique (même id et même couleur) est déjà présent dans le localStorage
+                // Vérification si un produit identique (même id et même couleur) est déjà présent dans le panier
                 let foundProduct = basket.find(p => p.id === product._id && p.color === colorSelected);
                 
                 // Si le produit commandé est identique (même id et même couleur), on incrémente la quantité
@@ -123,7 +121,7 @@ const addToCart = () => {
                     localStorage.setItem("productSelected", JSON.stringify(basket));
                     console.table(basket);
 
-                // Si le produit commandé n'est pas identique, on l'ajoute au localStorage
+                // Si le produit commandé n'est pas strictement identique, on l'ajoute au panier et dans le localStorage
                 } else {
                     basket.push(productSelected);
                     localStorage.setItem("productSelected", JSON.stringify(basket));
@@ -131,11 +129,9 @@ const addToCart = () => {
                 }
             }
         } else {
-            // Apparition d'un message d'erreur
             alert ("Veuillez choisir une couleur et/ou une quantité comprise entre 1 et 100");
         }
     });
 };
-
-// Appel de la fonction stockée dans la constante addToCart
+// Appel de la fonction addToCart
 addToCart();
