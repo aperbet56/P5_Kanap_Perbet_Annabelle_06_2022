@@ -257,7 +257,7 @@ const firstNameValidation = (firstName) => {
             document.querySelector("#firstNameErrorMsg").textContent = "Veuillez saisir un prénom valide, ex : Pierre";
             return false;
         } else {
-            document.querySelector("#firstNameErrorMsg").textContent = "Le champ prénom est valide";
+            document.querySelector("#firstNameErrorMsg").textContent = " ";
             return true;
         }
     });
@@ -278,7 +278,7 @@ const lastNameValidation = (lastName) => {
             document.querySelector("#lastNameErrorMsg").textContent = "Veuillez saisir un nom valide, ex : Dupont";
             return false;
         } else {
-            document.querySelector("#lastNameErrorMsg").textContent = "Le champ nom est valide";
+            document.querySelector("#lastNameErrorMsg").textContent = " ";
             return true;
         }
     });
@@ -296,10 +296,10 @@ const addressValidation = (address) => {
     address.addEventListener("change", (e) => {
         e.preventDefault();
         if (regexAddress.test(address.value) == false) {
-            document.querySelector("#addressErrorMsg").textContent= "Veuillez saisir une addresse valide, ex : 10 Avenue des Oliviers";
+            document.querySelector("#addressErrorMsg").textContent = "Veuillez saisir une addresse valide, ex : 10 Avenue des Oliviers";
             return false;
         } else {
-            document.querySelector("#addressErrorMsg").textContent = "Le champ addresse est valide";
+            document.querySelector("#addressErrorMsg").textContent = " ";
             return true;
         }
     });
@@ -317,10 +317,10 @@ const cityValidation = (city) => {
     city.addEventListener("change", (e) => {
         e.preventDefault();
         if (regexCity.test(city.value) == false) {
-            document.querySelector("#cityErrorMsg").textContent= "Veuillez saisir une ville valide, ex : Lyon";
+            document.querySelector("#cityErrorMsg").textContent = "Veuillez saisir une ville valide, ex : Lyon";
             return false;
         } else {
-            document.querySelector("#cityErrorMsg").textContent = "Le champ ville est valide";
+            document.querySelector("#cityErrorMsg").textContent = " ";
             return true;
         }
     });
@@ -338,10 +338,10 @@ const emailValidation = (email) => {
     email.addEventListener("change", (e) => {
         e.preventDefault();
         if (regexEmail.test(email.value) == false) {
-            document.querySelector("#emailErrorMsg").textContent= "Veuillez saisir un email valide, ex : exemple@exemple.com";
+            document.querySelector("#emailErrorMsg").textContent = "Veuillez saisir un email valide, ex : exemple@contact.com";
             return false;
         } else {
-            document.querySelector("#emailErrorMsg").textContent = "Le champ email est valide";
+            document.querySelector("#emailErrorMsg").textContent = " ";
             return true;
         }
    });
@@ -349,11 +349,8 @@ const emailValidation = (email) => {
 // Appel de la fonction emailValidation
 emailValidation(email);
 
-/**
- * Déclaration de la fonction SendToServer permettant d'envoyer des données au serveur
- * @param {Array.<Object>} basket 
- */
-const sendToServer = (basket) => {
+//Déclaration de la fonction SendToServer permettant d'envoyer des données au serveur
+const sendToServer = () => {
     
     // Récupération du bouton "Commander !"
     let btnOrder = document.querySelector("#order");
@@ -416,4 +413,4 @@ const sendToServer = (basket) => {
     });
 };
 // Appel de la fonction sendToServer
-sendToServer(basket);
+sendToServer();
