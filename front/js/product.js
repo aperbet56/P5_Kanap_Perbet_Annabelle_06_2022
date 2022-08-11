@@ -126,7 +126,7 @@ const addToCart = () => {
                 } else {
                     basket.push(productSelected);
                     localStorage.setItem("productSelected", JSON.stringify(basket));
-                    alert(`Votre commande de ${quantitySelected} canapé(s) ${product.name} de couleur ${colorSelected} a bien été ajouté au panier.`);
+                    alert(`Votre commande de ${quantitySelected} canapé(s) ${product.name} de couleur ${colorSelected} a bien été ajouté au panier. Pour consulter votre panier, cliquez sur l'onglet Panier`);
                     console.table(basket); 
                 }
             }
