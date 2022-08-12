@@ -87,7 +87,7 @@ const addToCart = () => {
         let quantitySelected = quantity.value;
 
         // Condition vérifiant si la couleur et la quantité choisies sont conformes 
-        if ((colorSelected !== "" || colorSelected === null) && (quantitySelected > 0 && quantitySelected <= 100)) {
+        if (colorSelected !== "" && quantitySelected > 0 && quantitySelected <= 100) {
     
             // Création d'un objet productSelected contenant les données du produit sélectionné par le client
             let productSelected = {
@@ -106,7 +106,7 @@ const addToCart = () => {
                 basket = [];
                 basket.push(productSelected);
                 localStorage.setItem("productSelected", JSON.stringify(basket));
-                alert(`Votre commande de ${quantitySelected} canapé(s) ${product.name} de couleur ${colorSelected} a bien été ajouté au panier. Pour consulter votre panier, cliquez sur l'onglet Panier`); 
+                alert(`Votre commande de ${quantitySelected} canapé(s) ${product.name} de couleur ${colorSelected} a bien été ajouté au panier. Pour consulter votre panier, cliquez sur le lien Panier`); 
                 console.table(basket);
     
             // Si le localStorage contient déjà un produit ou plus
@@ -126,7 +126,7 @@ const addToCart = () => {
                 } else {
                     basket.push(productSelected);
                     localStorage.setItem("productSelected", JSON.stringify(basket));
-                    alert(`Votre commande de ${quantitySelected} canapé(s) ${product.name} de couleur ${colorSelected} a bien été ajouté au panier. Pour consulter votre panier, cliquez sur l'onglet Panier`);
+                    alert(`Votre commande de ${quantitySelected} canapé(s) ${product.name} de couleur ${colorSelected} a bien été ajouté au panier. Pour consulter votre panier, cliquez sur le lien Panier`);
                     console.table(basket); 
                 }
             }
