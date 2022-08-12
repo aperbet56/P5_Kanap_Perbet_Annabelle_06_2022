@@ -233,7 +233,7 @@ const removeProduct = (basket) => {
 
 // Regex 
 const regexName = /^[A-Z][A-Za-z\é\è\ê\ô\-]+$/;
-const regexAddress = /^(.){2,50}$/;
+const regexAddress = /^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+/; ///^(.){2,50}$/;
 const regexCity = /^[a-zA-Z',.\s-]{1,25}$/;
 const regexEmail = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/;
 
@@ -360,8 +360,9 @@ const sendToServer = () => {
         e.preventDefault();
         if (basket === null || basket === 0) {
             alert("Votre panier est vide ! Veuillez choisir un ou plusieurs produits avant de remplir le formulaire pour valider votre commande !");
-        } // Contrôle de la validité du formulaire 
-        else if (regexName.test(firstName.value) == false || regexName.test(lastName.value) == false || regexAddress.test(address.value) == false || regexCity.test(city.value) == false || regexEmail.test(email.value) == false) {
+        
+        // Contrôle de la validité du formulaire 
+        } else if (regexName.test(firstName.value) == false || regexName.test(lastName.value) == false || regexAddress.test(address.value) == false || regexCity.test(city.value) == false || regexEmail.test(email.value) == false) {
             alert("Malheureusement, nous ne sommes pas en mesure d'enregistrer votre commande : vos informations de contact ne sont pas corrects ! ");
         } else {
 
@@ -385,7 +386,7 @@ const sendToServer = () => {
                 console.table(products);
             }
 
-            // Requête fetch de l'URL de l'API et utilisation de la methode POST
+            // Fetch de l'URL de l'API et utilisation de la methode POST
             fetch(`http://localhost:3000/api/products/order`, {
                 method : "POST",
                 headers : {
