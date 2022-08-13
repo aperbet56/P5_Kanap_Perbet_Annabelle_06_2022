@@ -102,7 +102,7 @@ const addToCart = () => {
             let basket = JSON.parse(localStorage.getItem("productSelected"));
 
             // Si le localStorage est vide, on y ajoute le produit sélectionné 
-            if (basket === null || basket === 0) {
+            if (basket == null) {
                 basket = [];
                 basket.push(productSelected);
                 localStorage.setItem("productSelected", JSON.stringify(basket));
@@ -110,7 +110,7 @@ const addToCart = () => {
                 console.table(basket);
     
             // Si le localStorage contient déjà un produit ou plus
-            } else if (basket !== null) {
+            } else if (basket != null) {
                 
                 // Vérification si un produit identique (même id et même couleur) est déjà présent dans le panier
                 let foundProduct = basket.find(p => p.id === product._id && p.color === colorSelected);

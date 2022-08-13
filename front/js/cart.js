@@ -13,12 +13,12 @@ let articles = [];
  * @param {Array.<Object>} basket 
  */
 const displayProductInLS = async(basket) => { 
-    if (basket === null || basket === 0) {
+    if ( basket == null) {
         let emptyCartItems = document.querySelector("#cart__items");
         emptyCartItems.innerHTML = `<p>Votre panier est vide</p>`;
     } else {
         for(let i = 0; i < basket.length; i++) {
-            await fetch(`http://localhost:3000/api/products/${basket[i].id}`) // Récupération des données manquantes des produits présents dans le localStorage
+            await fetch(`http://localhost:3000/api/products/${basket[i].id}`) 
             .then(function(res) {
                 if(res.ok) {
                     return res.json(); 
@@ -189,7 +189,7 @@ const quantityChange = (basket) => {
                     }
                 } 
             } else {
-                alert("Veuillez choisir une quantité comprise entre 1 et 100")
+                alert("Veuillez choisir une quantité comprise entre 1 et 100");
             }
         });
     });
@@ -233,7 +233,7 @@ const removeProduct = (basket) => {
 
 // Regex 
 const regexName = /^[A-Z][A-Za-z\é\è\ê\ô\-]+$/;
-const regexAddress = /^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+/; ///^(.){2,50}$/;
+const regexAddress = /^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+/; 
 const regexCity = /^[a-zA-Z',.\s-]{1,25}$/;
 const regexEmail = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/;
 
@@ -358,7 +358,7 @@ const sendToServer = () => {
     // Ecoute de l'événement "click" sur le bouton "Commander !"
     btnOrder.addEventListener("click", (e) => {
         e.preventDefault();
-        if (basket === null || basket === 0) {
+        if (basket == null) {
             alert("Votre panier est vide ! Veuillez choisir un ou plusieurs produits avant de remplir le formulaire pour valider votre commande !");
         
         // Contrôle de la validité du formulaire 
@@ -386,7 +386,7 @@ const sendToServer = () => {
                 console.table(products);
             }
 
-            // Fetch de l'URL de l'API et utilisation de la methode POST
+            // Fetch de l'URL de l'API et utilisation de la méthode POST
             fetch(`http://localhost:3000/api/products/order`, {
                 method : "POST",
                 headers : {
